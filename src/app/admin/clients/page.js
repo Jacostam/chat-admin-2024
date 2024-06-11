@@ -1,9 +1,19 @@
-import { Box, Button, Grid, Paper, Typography } from "@mui/material";
-import React from "react";
+'use client'
+import { Box, Button, Dialog, DialogContent, Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { IconAdd } from "../../../../public/icons/custom";
 import ClientsCard from "@/components/cards/ClientsCard";
+import ClientsForm from "@/components/forms/clients/ClientsForm";
 
 const Companies = () => {
+
+    const [open, setOpen] = useState(false)
+    const [current, setCurrent] = useState(false)
+
+    const handleCurrent = (item) => {
+        setCurrent(item)
+        setOpen(true)
+    }
 
     return (
         <Grid container spacing={2} >
@@ -15,6 +25,9 @@ const Companies = () => {
                 <Button
                     fullWidth
                     endIcon={<IconAdd size={24} />} 
+                    onClick={() => {
+                        setOpen(true)
+                    }}
                 >
                     Nuevo Cliente
                 </Button>
@@ -45,10 +58,23 @@ const Companies = () => {
             {
                 [1,2,3,4,5].map((item) => (
                     <Grid item xs={12} key={item}>
-                        <ClientsCard />
+                        <ClientsCard handleCurrent={handleCurrent} />
                     </Grid>
                 ))
             }
+
+
+            <Dialog 
+                open={open}
+                onClose={() => {
+                    setOpen(false)
+                }}
+                maxWidth={'xs'}
+            >
+                <DialogContent>
+                    <ClientsForm setOpen={setOpen} current={current} />
+                </DialogContent>
+            </Dialog>
 
         </Grid>
     )

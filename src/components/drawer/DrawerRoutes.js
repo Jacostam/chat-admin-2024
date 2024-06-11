@@ -12,5 +12,10 @@ export const DrawerRoutes = [
         //     },
         // ]
     },
+    {
+        icon: <IconClients />,
+        title: 'Asesores',
+        route: '/admin/advisors'
+    },
 
 ]

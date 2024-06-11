@@ -9,7 +9,7 @@ const CutomPaper = styled(Paper)({
     borderRadius: '12px'
 })
 
-const ClientsCard = () => {
+const ClientsCard = ({ handleCurrent }) => {
     return (
         <CutomPaper>
             <Grid container alignItems={'center'}>
@@ -38,7 +38,7 @@ const ClientsCard = () => {
 
                 <Grid item xs={1.5}>
                     <Box display={'flex'} justifyContent={'space-between'} >
-                        <IconButton>
+                        <IconButton onClick={() => handleCurrent(1)} >
                             <IconEdit />
                         </IconButton>
                         <IconButton>
