@@ -1,7 +1,5 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import Providers from "@/providers";
 
 export const metadata = {
   title: "Create Next App",
@@ -11,7 +9,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+      </head>
+      <body style={{backgroundColor: '#F0F2F5'}}>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
