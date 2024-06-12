@@ -1,10 +1,44 @@
 'use client'
 import AdvisorCard from "@/components/cards/AdvisorCard";
 import CustomAutocomplete from "@/components/inputs/customAutocomplete/CustomAutocomplete";
+import Loading from "@/components/loading/loading";
+import { getAdvisorsByClient } from "@/services/advisors";
+import { getClients } from "@/services/clients";
 import { Box, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Advisors = () => {
+
+    const [advisors, setAdvisors] = useState([])
+    const [clients, setClients] = useState([])
+    const [currentClient, setCurrentClient] = useState({})
+    const [loading, setLoading] = useState(false)
+    const [loadingAdvisors, setLoadingAdvisors] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        getClients()
+            .then(({data}) => {
+                setClients(data?.data)
+                setCurrentClient(data?.data?.at(0))
+            })
+            .catch(console.error)
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [])
+
+    useEffect(() => {
+        setLoadingAdvisors(true)
+        getAdvisorsByClient(currentClient?.id)
+            .then(({data}) => {
+                setAdvisors(data?.data ?? [])
+            })
+            .catch(console.error)
+            .finally(() => {
+                setLoadingAdvisors(false)
+            })
+    }, [currentClient])
 
     return (
         <Grid container spacing={2}>
@@ -13,10 +47,17 @@ const Advisors = () => {
             </Grid>
 
             <Grid item xs={3}>
-                <CustomAutocomplete
-                    label={'Cliente'}
-                    options={[]}
-                />
+                {
+                    <CustomAutocomplete
+                        label={'Cliente'}
+                        options={clients}
+                        optionLabel="name"
+                        defaultValue={currentClient}
+                        value={currentClient}
+                        onChange={setCurrentClient}
+                        loading={loading}
+                    />
+                }
             </Grid>
 
             <Grid item xs={12}>
@@ -42,11 +83,18 @@ const Advisors = () => {
             </Grid>
 
             {
-                [1,2,3,4,5,6].map((item) => (
-                    <Grid item xs={12}>
-                        <AdvisorCard />
-                    </Grid>
-                ))
+                loadingAdvisors ?
+                    <Loading />
+                :
+                    <>
+                        {
+                            advisors?.map((item) => (
+                                <Grid item xs={12} key={item}>
+                                    <AdvisorCard item={item} />
+                                </Grid>
+                            ))
+                        }
+                    </>
             }
 
         </Grid>

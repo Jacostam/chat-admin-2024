@@ -1,14 +1,30 @@
 'use client'
 import { Box, Button, Dialog, DialogContent, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconAdd } from "../../../../public/icons/custom";
 import ClientsCard from "@/components/cards/ClientsCard";
 import ClientsForm from "@/components/forms/clients/ClientsForm";
+import { getClients } from "@/services/clients";
+import Loading from "@/components/loading/loading";
 
 const Companies = () => {
 
     const [open, setOpen] = useState(false)
     const [current, setCurrent] = useState(false)
+    const [clients, setClients] = useState([])
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setLoading(true)
+        getClients()
+            .then(({data}) => {
+                setClients(data?.data)
+            })
+            .catch(console.error)
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [])
 
     const handleCurrent = (item) => {
         setCurrent(item)
@@ -56,11 +72,18 @@ const Companies = () => {
             </Grid>
 
             {
-                [1,2,3,4,5].map((item) => (
-                    <Grid item xs={12} key={item}>
-                        <ClientsCard handleCurrent={handleCurrent} />
-                    </Grid>
-                ))
+                loading ?
+                    <Loading/>
+                :
+                    <>
+                        {
+                            clients?.map((item) => (
+                                <Grid item xs={12} key={item}>
+                                    <ClientsCard handleCurrent={handleCurrent} item={item} />
+                                </Grid>
+                            ))
+                        }
+                    </>
             }
 
 

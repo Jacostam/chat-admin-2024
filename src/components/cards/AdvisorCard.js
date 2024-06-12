@@ -8,27 +8,30 @@ const CutomPaper = styled(Paper)({
     borderRadius: '12px'
 })
 
-const AdvisorCard = () => {
+const AdvisorCard = ({item}) => {
     
     return (
         <CutomPaper>
             <Grid container alignItems={'center'}>
                 <Grid item xs={3}>
-                    <Typography>Steveen</Typography>
+                    <Box>
+                        <Typography>{item?.name}</Typography>
+                        <Typography variant="h5" >{item?.company?.name}</Typography>
+                    </Box>
                 </Grid>
                 
                 <Grid item xs={3}>
-                    <Tooltip title={'elisra0412@gmail.com'}>
-                        <Typography noWrap >elisra0412@gmail.com</Typography>
+                    <Tooltip title={item?.email}>
+                        <Typography noWrap >{item?.email}</Typography>
                     </Tooltip>
                 </Grid>
 
                 <Grid item xs={2}>
-                    <Typography noWrap >3107028274</Typography>
+                    <Typography noWrap >{item?.phone}</Typography>
                 </Grid>
 
                 <Grid item xs={2}>
-                    <Typography>3107028274</Typography>
+                    <Typography>{item?.document}</Typography>
                 </Grid>
 
                 <Grid item xs={2}>

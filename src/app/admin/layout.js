@@ -1,12 +1,16 @@
+'use client'
 import CustomAppBar from "@/components/appBar/CustomAppBar";
 import CustomDrawer from "@/components/drawer/CustomDrawer";
+import Loading from "@/components/loading/loading";
+import { useLayout } from "@/hooks/useLayout";
 import { Box } from "@mui/material";
 import React from "react";
 
 const drawerWidth = '270px';
 
-
 const AdminLayout = ({children}) => {
+
+    const { loading } = useLayout();
 
     return (
         <Box>
@@ -20,7 +24,14 @@ const AdminLayout = ({children}) => {
                     marginLeft: `calc(${drawerWidth} + 50px)`,
                 }}
             >
-                {children}
+                {
+                    loading ?
+                        <Loading />
+                    :
+                        <>
+                            {children}
+                        </>
+                }
             </Box>
 
         </Box>

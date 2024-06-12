@@ -1,4 +1,5 @@
 'use client'
+import { useAuthStore } from "@/stores/auth";
 import styled from "@emotion/styled";
 import { AppBar, Avatar, Box, Toolbar, Typography } from "@mui/material";
 import React from "react";
@@ -17,6 +18,8 @@ const CustomAvatar = styled(Avatar)({
 
 const CustomAppBar = ({ drawerWidth }) => {
 
+    const { user } = useAuthStore();
+
     return (
         <CustomBar 
             position='sticky'
@@ -27,7 +30,7 @@ const CustomAppBar = ({ drawerWidth }) => {
                     <Box display={'flex'} alignItems={'center'} gap={2}>
                         <CustomAvatar/>
                         <Box>
-                            <Typography variant='h3' >Steeev</Typography>
+                            <Typography variant='h3' >{user?.name ?? 'Admin'}</Typography>
                             <Typography variant='supralabel' >User Rol</Typography>
                         </Box>
                     </Box>

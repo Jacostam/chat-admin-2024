@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import ControllerInput from '@/components/inputs/controllerInput/ControllerInput'
 import LoadingButton from '@/components/buttons/loadingButton/LoadingButton'
 import Image from 'next/image'
+import { loginStore, useAuthStore } from '@/stores/auth'
 // import { loginStore, useAuthStore } from '@/stores/auth'
 
 const CustomPaper = styled(Paper)({
@@ -17,7 +18,7 @@ const CustomPaper = styled(Paper)({
 
 const Login = () => {
 
-    // const { setUser, setUserId } = useAuthStore();
+    const { setUser, setOauthId } = useAuthStore();
 
     const { control, handleSubmit, formState: { errors } } = useForm();
     const router = useRouter();
@@ -26,23 +27,21 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState();
 
     const onSubmit = (values) => {
-
         setLoading(true)
-        router.push('/admin/clients')
+        
+        loginStore(values)
+            .then(({data}) => {
+                setUser(data)
+                setOauthId(data?.id)
 
-        // loginStore(values)
-        //     .then(({data}) => {
-        //         setUser(data)
-        //         setUserId(data?.id)
-                
-        //         router.push('admin/home')
-        //     })
-        //     .catch((e) => {
-        //         setErrorMessage(e);
-        //     })
-        //     .finally(() => {
-        //         setLoading(false)
-        //     })
+                router.push('/admin/clients')    
+            })
+            .catch((e) => {
+                setErrorMessage(e);
+            })
+            .finally(() => {
+                setLoading(false)
+            })
 
     }
 
