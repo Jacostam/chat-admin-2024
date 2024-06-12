@@ -218,22 +218,6 @@ const theme = createTheme({
                 }
             }
         },
-        MuiAutocomplete: {
-            styleOverrides: {
-                root: {
-                    height: '50px',
-
-                    '.MuiOutlinedInput-root': {
-                        height: '50px',
-                        padding: '0px 10px'
-                    },
-
-                    '.MuiAutocomplete-tag': {
-                        height: '28px',
-                    }
-                }
-            }
-        },
         MuiPopper: {
             styleOverrides: {
                 root: {

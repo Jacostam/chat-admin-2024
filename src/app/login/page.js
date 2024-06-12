@@ -1,11 +1,12 @@
 'use client'
 import styled from '@emotion/styled'
-import { Grid, Paper, Typography } from '@mui/material'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import ControllerInput from '@/components/inputs/controllerInput/ControllerInput'
 import LoadingButton from '@/components/buttons/loadingButton/LoadingButton'
+import Image from 'next/image'
 // import { loginStore, useAuthStore } from '@/stores/auth'
 
 const CustomPaper = styled(Paper)({
@@ -25,7 +26,10 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState();
 
     const onSubmit = (values) => {
-        // setLoading(true)
+
+        setLoading(true)
+        router.push('/admin/clients')
+
         // loginStore(values)
         //     .then(({data}) => {
         //         setUser(data)
@@ -47,11 +51,14 @@ const Login = () => {
             <CustomPaper elevation={1} >
 
                 <form onSubmit={handleSubmit(onSubmit)} >
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} >
-                            <Typography variant='h2' textAlign={'center'} >
-                                Iniciar Sesión
-                            </Typography>
+                    <Grid container spacing={3} >
+                        <Grid item xs={12}>
+                            <Box sx={{margin: 'auto', width: 'min-content'}} >
+                                <Image src={'/images/logo.png'} width={150} height={150} />
+                                <Typography variant='h2' textAlign={'center'} >
+                                    Iniciar Sesión
+                                </Typography>
+                            </Box>
                         </Grid>
 
                         <Grid item xs={12}>

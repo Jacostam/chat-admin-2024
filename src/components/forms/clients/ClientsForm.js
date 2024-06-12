@@ -1,5 +1,5 @@
 import ControllerInput from "@/components/inputs/controllerInput/ControllerInput";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, FormControlLabel, Grid, Switch, Typography } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -66,6 +66,13 @@ const ClientsForm = ({ setOpen, current }) => {
                         control={control}
                         name={'password2'}
                         label="Validar Password"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <FormControlLabel
+                        control={<Switch />} 
+                        label={'Activo'} 
                     />
                 </Grid>
 
