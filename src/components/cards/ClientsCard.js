@@ -38,7 +38,7 @@ const ClientsCard = ({ handleCurrent, item }) => {
 
                 <Grid item xs={1.5}>
                     <Box display={'flex'} justifyContent={'space-between'} >
-                        <IconButton onClick={() => handleCurrent(1)} >
+                        <IconButton onClick={() => handleCurrent(item)} >
                             <IconEdit />
                         </IconButton>
                         <IconButton>

@@ -1,15 +1,35 @@
+import LoadingButton from "@/components/buttons/loadingButton/LoadingButton";
 import ControllerInput from "@/components/inputs/controllerInput/ControllerInput";
+import { createClient, updateClient } from "@/services/clients";
 import { Button, FormControlLabel, Grid, Switch, Typography } from "@mui/material";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
-const ClientsForm = ({ setOpen, current }) => {
+const ClientsForm = ({ setOpen, current, setReset }) => {
 
     const { control, handleSubmit } = useForm({
         defaultValues: current
     });
 
-    const onSubmit = () => {
+    const [loading, setLoading] = useState(false);
+
+    const onSubmit = (values) => {
+
+        const callBack = current ? updateClient : createClient;
+        setLoading(true)
+        callBack(values, current?.id)
+            .then(({data}) => {
+                if (data?.status == 'success') {
+                    setOpen()
+                    setReset(prev => !prev)
+                } else {
+                    throw data;
+                }
+            })
+            .catch(console.error)
+            .finally(() => {
+                setLoading(false)
+            })
 
     }
 
@@ -24,16 +44,8 @@ const ClientsForm = ({ setOpen, current }) => {
                 <Grid item xs={12}>
                     <ControllerInput
                         control={control}
-                        name={'razon'}
+                        name={'name'}
                         label="Razon Social"
-                    />
-                </Grid>
-                
-                <Grid item xs={12}>
-                    <ControllerInput
-                        control={control}
-                        name={'email'}
-                        label="Email"
                     />
                 </Grid>
                 
@@ -52,9 +64,19 @@ const ClientsForm = ({ setOpen, current }) => {
                         label="Telefono"
                     />
                 </Grid>
+
+                <Grid item xs={12}>
+                    <ControllerInput
+                        control={control}
+                        name={'email'}
+                        label="Email"
+                        disabled={current}
+                    />
+                </Grid>
                 
                 <Grid item xs={12}>
                     <ControllerInput
+                        required={!current}
                         control={control}
                         name={'password'}
                         label="Password"
@@ -63,6 +85,7 @@ const ClientsForm = ({ setOpen, current }) => {
                 
                 <Grid item xs={12}>
                     <ControllerInput
+                        required={!current}
                         control={control}
                         name={'password2'}
                         label="Validar Password"
@@ -70,9 +93,20 @@ const ClientsForm = ({ setOpen, current }) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <FormControlLabel
-                        control={<Switch />} 
-                        label={'Activo'} 
+                    <Controller
+                        control={control}
+                        name="active"
+                        render={({field}) => {
+
+                            return (
+                                <FormControlLabel
+                                    {...field}
+                                    control={<Switch />} 
+                                    label={'Activo'} 
+                                    checked={field.value}
+                                />
+                            )
+                        }}
                     />
                 </Grid>
 
@@ -88,12 +122,18 @@ const ClientsForm = ({ setOpen, current }) => {
                 <Grid item xs={4} />
 
                 <Grid item xs={4} >
-                    <Button
+                    <LoadingButton
                         fullWidth
                         type="submit"
+                        loading={loading}
                     >
-                        Crear
-                    </Button>
+                        {
+                            current ?
+                                'Actualizar'
+                            :
+                                'Crear'
+                        }
+                    </LoadingButton>
                 </Grid>
             </Grid>
         </form>

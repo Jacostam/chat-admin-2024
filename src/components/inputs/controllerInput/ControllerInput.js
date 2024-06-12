@@ -7,6 +7,7 @@ const ControllerInput = ({
     name,
     label = '',
     required = true,
+    disabled = false
 }) => {
 
     return (
@@ -21,6 +22,7 @@ const ControllerInput = ({
                     error={error}
                     placeholder={label}
                     label={label}
+                    disabled={disabled}
                 />
             )}
         />

@@ -13,6 +13,7 @@ const Companies = () => {
     const [current, setCurrent] = useState(false)
     const [clients, setClients] = useState([])
     const [loading, setLoading] = useState(false)
+    const [reset, setReset] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -24,11 +25,16 @@ const Companies = () => {
             .finally(() => {
                 setLoading(false)
             })
-    }, [])
+    }, [reset])
 
     const handleCurrent = (item) => {
         setCurrent(item)
         setOpen(true)
+    }
+   
+    const handleClose = (item) => {
+        setCurrent()
+        setOpen(false)
     }
 
     return (
@@ -89,13 +95,11 @@ const Companies = () => {
 
             <Dialog 
                 open={open}
-                onClose={() => {
-                    setOpen(false)
-                }}
+                onClose={handleClose}
                 maxWidth={'xs'}
             >
                 <DialogContent>
-                    <ClientsForm setOpen={setOpen} current={current} />
+                    <ClientsForm setOpen={handleClose} current={current} setReset={setReset} />
                 </DialogContent>
             </Dialog>
 
