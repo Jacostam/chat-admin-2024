@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { Box, Grid, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { IconChevronRight, IconEdit } from "../../../public/icons/custom";
+import { useRouter } from "next/navigation";
+import { useChatStore } from "@/stores/chat";
 
 const CutomPaper = styled(Paper)({
     padding: '10px 20px',
@@ -10,6 +12,15 @@ const CutomPaper = styled(Paper)({
 
 const AdvisorCard = ({item}) => {
     
+    const router = useRouter()
+
+    const { setAdvisor } = useChatStore()
+
+    const goToChats = () => {
+        setAdvisor(item)
+        router.push('/admin/chat')
+    }
+
     return (
         <CutomPaper>
             <Grid container alignItems={'center'}>
@@ -39,7 +50,7 @@ const AdvisorCard = ({item}) => {
                         <IconButton onClick={() => handleCurrent(1)} >
                             <IconEdit />
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={goToChats} >
                             <IconChevronRight />
                         </IconButton>
                     </Box>

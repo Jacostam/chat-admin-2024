@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Box, Grid, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { IconChevronRight, IconCopy, IconEdit } from "../../../public/icons/custom";
+import { useRouter } from "next/navigation";
 
 const CutomPaper = styled(Paper)({
     padding: '10px 20px',
@@ -10,6 +11,9 @@ const CutomPaper = styled(Paper)({
 })
 
 const ClientsCard = ({ handleCurrent, item }) => {
+
+    const router = useRouter();
+
     return (
         <CutomPaper>
             <Grid container alignItems={'center'}>
@@ -41,7 +45,7 @@ const ClientsCard = ({ handleCurrent, item }) => {
                         <IconButton onClick={() => handleCurrent(item)} >
                             <IconEdit />
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={ () => router.push(`/admin/advisors?client_id=${item?.id}`)} >
                             <IconChevronRight />
                         </IconButton>
                     </Box>

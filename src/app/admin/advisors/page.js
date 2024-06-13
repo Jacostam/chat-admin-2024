@@ -5,9 +5,12 @@ import Loading from "@/components/loading/loading";
 import { getAdvisorsByClient } from "@/services/advisors";
 import { getClients } from "@/services/clients";
 import { Box, Grid, Typography } from "@mui/material";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Advisors = () => {
+
+    const searchParams = useSearchParams()
 
     const [advisors, setAdvisors] = useState([])
     const [clients, setClients] = useState([])
@@ -20,7 +23,12 @@ const Advisors = () => {
         getClients()
             .then(({data}) => {
                 setClients(data?.data)
-                setCurrentClient(data?.data?.at(0))
+
+                if (searchParams.get('client_id')) {
+                    setCurrentClient(data?.data?.find((item) => item?.id == searchParams.get('client_id')))
+                } else {
+                    setCurrentClient(data?.data?.at(0))
+                }
             })
             .catch(console.error)
             .finally(() => {
