@@ -98,6 +98,15 @@ const ListChats = () => {
                             )
                         })
                     }
+
+                    {
+                        !loading && channels.length == 0 &&
+                            <Box display={'flex'} justifyContent={'center'} >
+
+                                <Typography>No hay canales</Typography>
+
+                            </Box>
+                    }
                 </ChatListContainer>
             </ChatsContainer>
         </CustomChatPaper>

@@ -10,7 +10,7 @@ const CutomPaper = styled(Paper)({
     borderRadius: '12px'
 })
 
-const AdvisorCard = ({item}) => {
+const AdvisorCard = ({item, handleCurrent}) => {
     
     const router = useRouter()
 
@@ -47,7 +47,7 @@ const AdvisorCard = ({item}) => {
 
                 <Grid item xs={2}>
                     <Box display={'flex'} justifyContent={'space-between'} >
-                        <IconButton onClick={() => handleCurrent(1)} >
+                        <IconButton onClick={() => handleCurrent(item)} >
                             <IconEdit />
                         </IconButton>
                         <IconButton onClick={goToChats} >

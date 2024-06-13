@@ -1,12 +1,14 @@
 'use client'
 import AdvisorCard from "@/components/cards/AdvisorCard";
+import AdvisorsForm from "@/components/forms/advisor/AdvisorsForm";
 import CustomAutocomplete from "@/components/inputs/customAutocomplete/CustomAutocomplete";
 import Loading from "@/components/loading/loading";
 import { getAdvisorsByClient } from "@/services/advisors";
 import { getClients } from "@/services/clients";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogContent, Grid, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { IconAdd } from "../../../../public/icons/custom";
 
 const Advisors = () => {
 
@@ -17,6 +19,11 @@ const Advisors = () => {
     const [currentClient, setCurrentClient] = useState({})
     const [loading, setLoading] = useState(false)
     const [loadingAdvisors, setLoadingAdvisors] = useState(false)
+    const [reset, setReset] = useState(false)
+
+    //form
+    const [open, setOpen] = useState(false)
+    const [current, setCurrent] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -24,7 +31,7 @@ const Advisors = () => {
             .then(({data}) => {
                 setClients(data?.data)
 
-                if (searchParams.get('client_id')) {
+                if (searchParams.get('client_id') && !currentClient?.id) {
                     setCurrentClient(data?.data?.find((item) => item?.id == searchParams.get('client_id')))
                 } else {
                     setCurrentClient(data?.data?.at(0))
@@ -34,7 +41,7 @@ const Advisors = () => {
             .finally(() => {
                 setLoading(false)
             })
-    }, [])
+    }, [reset])
 
     useEffect(() => {
         setLoadingAdvisors(true)
@@ -48,10 +55,32 @@ const Advisors = () => {
             })
     }, [currentClient])
 
+    const handleCurrent = (item) => {
+        setCurrent(item)
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setCurrent()
+        setOpen(false)
+    }
+
     return (
         <Grid container spacing={2}>
-            <Grid item xs={9} >
+            <Grid item xs={6.8} >
                 <Typography variant="h1" >Asesores</Typography>
+            </Grid>
+
+            <Grid item xs={2.2}>
+                <Button
+                    fullWidth
+                    endIcon={<IconAdd size={24} />} 
+                    onClick={() => {
+                        setOpen(true)
+                    }}
+                >
+                    Nuevo asesor
+                </Button>
             </Grid>
 
             <Grid item xs={3}>
@@ -98,12 +127,28 @@ const Advisors = () => {
                         {
                             advisors?.map((item) => (
                                 <Grid item xs={12} key={item}>
-                                    <AdvisorCard item={item} />
+                                    <AdvisorCard handleCurrent={handleCurrent} item={item} />
                                 </Grid>
                             ))
                         }
                     </>
             }
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                maxWidth={'xs'}
+            >
+                <DialogContent>
+                    <AdvisorsForm 
+                        setOpen={handleClose} 
+                        current={current} 
+                        setReset={setReset} 
+                        currentClient={currentClient}
+                        clients={clients}
+                    />
+                </DialogContent>
+            </Dialog>
 
         </Grid>
     )

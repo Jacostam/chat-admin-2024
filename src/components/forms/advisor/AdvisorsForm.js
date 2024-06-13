@@ -1,24 +1,29 @@
 import LoadingButton from "@/components/buttons/loadingButton/LoadingButton";
+import ControllerAutocomplete from "@/components/inputs/controllerAutocomplete/ControllerAutocomplete";
 import ControllerInput from "@/components/inputs/controllerInput/ControllerInput";
-import { createClient, updateClient } from "@/services/clients";
+import { createAdvisor, updateAdvisor } from "@/services/advisors";
 import { Button, FormControlLabel, Grid, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-const ClientsForm = ({ setOpen, current, setReset }) => {
+const AdvisorsForm = ({setOpen, current, setReset, clients, currentClient}) => {
 
-    const { control, handleSubmit } = useForm({
+    const {control, handleSubmit} = useForm({
         defaultValues: current
     });
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     const onSubmit = (values) => {
 
-        const callBack = current ? updateClient : createClient;
-        setLoading(true)
-        callBack(values, current?.id)
+        const client_uuid = values?.client?.uuid
+
+        setLoading(true);
+        const callBack = current ? updateAdvisor : createAdvisor;
+
+        callBack(values, current?.id ?? client_uuid)
             .then(({data}) => {
+                console.log(data)
                 if (data?.status == 'success') {
                     setOpen()
                     setReset(prev => !prev)
@@ -27,36 +32,35 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
                 }
             })
             .catch(console.error)
-            .finally(() => {
+            .then(() => {
                 setLoading(false)
             })
-
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
-            <Grid container spacing={2}>
+            <Grid container spacing={2} >
 
                 <Grid item xs={12}>
-                    <Typography>{current ? 'Actualizar' : 'Nuevo'} Cliente</Typography>
+                    <Typography>{current ? 'Actualizar' : 'Nuevo'} asesor</Typography>
                 </Grid>
 
                 <Grid item xs={12}>
                     <ControllerInput
                         control={control}
                         name={'name'}
-                        label="Razon Social"
+                        label="Nombre"
                     />
                 </Grid>
                 
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <ControllerInput
                         control={control}
-                        name={'nit'}
-                        label="Nit"
+                        name={'last_name'}
+                        label="Apellido"
                     />
                 </Grid>
-                
+
                 <Grid item xs={6}>
                     <ControllerInput
                         control={control}
@@ -64,6 +68,27 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
                         label="Telefono"
                     />
                 </Grid>
+                
+                <Grid item xs={6}>
+                    <ControllerInput
+                        control={control}
+                        name={'document'}
+                        label="Documento"
+                    />
+                </Grid>
+                
+                {
+                    !current &&
+                    <Grid item xs={12}>
+                        <ControllerAutocomplete
+                            control={control}
+                            name={'client'}
+                            label={'Cliente'}
+                            options={clients}
+                            value={currentClient}
+                        />
+                    </Grid>
+                }
 
                 <Grid item xs={12}>
                     <ControllerInput
@@ -73,7 +98,7 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
                         disabled={current}
                     />
                 </Grid>
-                
+
                 <Grid item xs={12}>
                     <ControllerInput
                         required={!current}
@@ -111,7 +136,7 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Button 
+                    <Button
                         variant="outlined" 
                         onClick={() => setOpen(false)}
                     >
@@ -135,10 +160,11 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
                         }
                     </LoadingButton>
                 </Grid>
+
             </Grid>
         </form>
     )
 
 }
 
-export default ClientsForm
+export default AdvisorsForm
