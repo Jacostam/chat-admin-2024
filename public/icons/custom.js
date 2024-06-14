@@ -83,3 +83,19 @@ export const IconEdit = ({ color = '#191919', size = 20}) => {
         </svg>
     )
 }
+
+export const IconChatMenu = ({ color = '#191919', size = 20}) => {
+    return (
+        <svg width="4" height="16" viewBox="0 0 10 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 7.15625C6.29442 7.15625 7.34375 6.10692 7.34375 4.8125C7.34375 3.51808 6.29442 2.46875 5 2.46875C3.70558 2.46875 2.65625 3.51808 2.65625 4.8125C2.65625 6.10692 3.70558 7.15625 5 7.15625Z" 
+                stroke={color} stroke-width="4.6875" stroke-linecap="round" stroke-linejoin="round"
+            />
+            <path d="M5 24.3438C6.29442 24.3438 7.34375 23.2944 7.34375 22C7.34375 20.7056 6.29442 19.6562 5 19.6562C3.70558 19.6562 2.65625 20.7056 2.65625 22C2.65625 23.2944 3.70558 24.3438 5 24.3438Z" 
+                stroke={color} stroke-width="4.6875" stroke-linecap="round" stroke-linejoin="round"
+            />
+            <path d="M5 41.5312C6.29442 41.5312 7.34375 40.4819 7.34375 39.1875C7.34375 37.8931 6.29442 36.8438 5 36.8438C3.70558 36.8438 2.65625 37.8931 2.65625 39.1875C2.65625 40.4819 3.70558 41.5312 5 41.5312Z" 
+                stroke={color} stroke-width="4.6875" stroke-linecap="round" stroke-linejoin="round"
+            />
+        </svg>
+    )
+}

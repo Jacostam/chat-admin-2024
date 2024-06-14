@@ -1,7 +1,8 @@
 import React from "react";
 import { CustomChatPaper } from "./chat.style";
 import { useChatStore } from "@/stores/chat";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { IconChatMenu } from "../../../public/icons/custom";
 
 const ChatFrame = () => {
 
@@ -14,16 +15,27 @@ const ChatFrame = () => {
         <CustomChatPaper>
             {
                 company?.uuid && channel?.user_email ?
-                    <iframe 
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            boxShadow: 'none',
-                            border: 'none'
-                        }}
-                        src={process.env.NEXT_PUBLIC_API_WEB_VIEW + "?uuid="+ company?.uuid + '&email=' + channel?.user_email + '&colaborator_id=' + id} 
-                        loading="eager"
-                    />
+                    <Box height={'100%'}>
+                        <Box display={'flex'} justifyContent={'space-between'} padding={'20px 30px'} >
+                            <Typography>{channel?.user_email}</Typography>
+
+                            <IconButton>
+                                <IconChatMenu />
+                            </IconButton>
+                        </Box>
+                        <iframe 
+                            style={{
+                                width: '100%',
+                                height: '89%',
+                                boxShadow: 'none',
+                                border: 'none',
+                                borderBottomLeftRadius: '12px',
+                                borderBottomRightRadius: '12px',
+                            }}
+                            src={process.env.NEXT_PUBLIC_API_WEB_VIEW + "?uuid="+ company?.uuid + '&email=' + channel?.user_email + '&colaborator_id=' + id} 
+                            loading="eager"
+                        />
+                    </Box>
                 :
                     <Box display={'flex'} justifyContent={'center'} height={'100%'} alignItems={'center'} >
                         <Typography 

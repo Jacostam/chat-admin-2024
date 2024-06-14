@@ -6,14 +6,13 @@ import { IconBurger, IconChevronDown } from '../../../public/icons/custom'
 import { usePathname, useRouter } from 'next/navigation'
 import { DrawerRoutes } from './DrawerRoutes'
 
-const CardContainer = styled(Box)({
-    background: 'rgb(66,66,74)',
-    background: 'linear-gradient(180deg, rgba(66,66,74,1) 0%, rgba(25,25,25,1) 100%)',
+const CardContainer = styled(Box)(({theme}) => ({
+    background: theme?.palette?.primary?.main,
     color: '#fff',
     padding: '18px',
     borderBottomRightRadius: '12px',
     height: '100%',
-})
+}))
 
 const ItemRoute = styled(Box)(({ select = false, single = false}) => ({
     width: '100%',

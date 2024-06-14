@@ -1,7 +1,7 @@
 const { createTheme } = require("@mui/material/styles");
 
 //Palette the colors
-const colorPrimary = "#191919";
+const colorPrimary = "#28304A";
 
 const theme = createTheme({
     palette: {
@@ -12,7 +12,7 @@ const theme = createTheme({
             dark: "#311650"
         },
         secondary: {
-            main: "#9299b8",
+            main: "#a9acb7",
         },
         error: {
             main: "#E64F3A"
