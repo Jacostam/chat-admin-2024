@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { CustomChatPaper } from "./chat.style";
 import { useChatStore } from "@/stores/chat";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { IconChatMenu } from "../../../public/icons/custom";
+import { endMeeting } from "@/services/chat";
 
 const ChatFrame = () => {
 
@@ -10,6 +11,29 @@ const ChatFrame = () => {
         advisor: { company, id }, 
         channel 
     } = useChatStore()
+
+    const [ iconRef, setIconRef ] = useState(null)
+
+    const finishMeeting = () => {
+        const body = {
+            id: 0,
+            content: "Finalizado",
+            type: 4,
+            colaborator_id: id,
+            user_id: id,
+            channel_id: channel?.id,
+            message_user_type: "colaborator",
+            company_id: company?.id,
+            message_status: "wait",
+            created_at: new Date().toUTCString()
+        }
+
+        endMeeting(body)
+            .then(({data}) => {
+                console.log(data)
+            })
+            .catch(console.error)
+    }
 
     return (
         <CustomChatPaper>
@@ -19,9 +43,22 @@ const ChatFrame = () => {
                         <Box display={'flex'} justifyContent={'space-between'} padding={'20px 30px'} >
                             <Typography>{channel?.user_email}</Typography>
 
-                            <IconButton>
+                            <IconButton 
+
+                                onClick={(v) => setIconRef(v.currentTarget)} 
+                            >
                                 <IconChatMenu />
                             </IconButton>
+
+                            <Menu
+                                id='menu-chat'
+                                anchorEl={iconRef}
+                                open={iconRef}
+                                onClick={() => setIconRef()}
+                            >
+                                <MenuItem >Editar Perfil</MenuItem>
+                                <MenuItem onClick={finishMeeting} >Terminar</MenuItem>
+                            </Menu>
                         </Box>
                         <iframe 
                             style={{
