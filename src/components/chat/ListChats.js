@@ -9,7 +9,7 @@ import useSocket from "@/hooks/useSocket";
 
 const ListChats = () => {
 
-    const { advisor: { id, company }, setChannel, channel } = useChatStore()
+    const { advisor: { id, company }, setChannel, channel, reload } = useChatStore()
 
     const [channels, setChannels] = useState([])
     const [loading, setLoading] = useState([])
@@ -26,7 +26,7 @@ const ListChats = () => {
             .finally(() => {
                 setLoading(false)
             })
-    }, [])
+    }, [reload])
 
     const handleClick = (channel) => {
         setChannel(channel)

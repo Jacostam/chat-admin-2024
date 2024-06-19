@@ -4,6 +4,7 @@ export const useChatStore = create((set, get) => ({
 
     advisor: {},
     channel: {},
+    reload: false,
 
     setAdvisor: (advisor) => {
         set(state => ({
@@ -16,6 +17,13 @@ export const useChatStore = create((set, get) => ({
         set(state => ({
             ...state,
             channel
+        }))
+    },
+    
+    setReload: (reload) => {
+        set(state => ({
+            ...state,
+            reload
         }))
     },
 

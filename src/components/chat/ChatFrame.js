@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { CustomChatPaper } from "./chat.style";
 import { useChatStore } from "@/stores/chat";
-import { Box, Grid, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Box, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { IconChatMenu } from "../../../public/icons/custom";
 import { endMeeting } from "@/services/chat";
+import UserForm from "../modals/userForm/userForm";
 
 const ChatFrame = () => {
 
     const { 
         advisor: { company, id }, 
-        channel 
+        channel, setChannel, reload, setReload
     } = useChatStore()
 
     const [ iconRef, setIconRef ] = useState(null)
+    const [ openModal, setOpenModal ] = useState()
 
     const finishMeeting = () => {
         const body = {
@@ -35,16 +37,22 @@ const ChatFrame = () => {
             .catch(console.error)
     }
 
+    const updateUser = (user) => {
+
+        setChannel({...channel, ...user})
+        setReload(!reload)
+    }
+
     return (
         <CustomChatPaper>
             {
                 company?.uuid && channel?.user_email ?
                     <Box height={'100%'}>
-                        <Box display={'flex'} justifyContent={'space-between'} padding={'20px 30px'} >
+                        <Box display={'flex'} justifyContent={'space-between'} padding={'15px 30px'} >
                             <Typography>{channel?.user_email}</Typography>
 
                             <IconButton 
-
+                                style={{padding: 8}}
                                 onClick={(v) => setIconRef(v.currentTarget)} 
                             >
                                 <IconChatMenu />
@@ -56,7 +64,7 @@ const ChatFrame = () => {
                                 open={iconRef}
                                 onClick={() => setIconRef()}
                             >
-                                <MenuItem >Editar Perfil</MenuItem>
+                                <MenuItem onClick={() => setOpenModal(true)} >Editar Perfil</MenuItem>
                                 <MenuItem onClick={finishMeeting} >Terminar</MenuItem>
                             </Menu>
                         </Box>
@@ -83,6 +91,16 @@ const ChatFrame = () => {
                         </Typography>
                     </Box>
             }
+
+            <Dialog
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                maxWidth={'xs'}
+            >
+                <DialogContent style={{borderRadius: '20px'}}>
+                    <UserForm user={channel?.user} setOpen={setOpenModal} onUpdateUser={updateUser} />
+                </DialogContent>
+            </Dialog>
         </CustomChatPaper>
     )
 

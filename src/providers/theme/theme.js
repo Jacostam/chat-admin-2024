@@ -240,6 +240,15 @@ const theme = createTheme({
                 }
             }
         },
+        MuiDialog: {
+            styleOverrides: {
+                root: {
+                    '.MuiPaper-root': {
+                        borderRadius: '16px'
+                    }
+                }
+            }
+        },
     },
 });
 
