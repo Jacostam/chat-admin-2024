@@ -5,6 +5,8 @@ import { Box, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Typograph
 import { IconChatMenu } from "../../../public/icons/custom";
 import { endMeeting } from "@/services/chat";
 import UserForm from "../modals/userForm/userForm";
+import Notes from "../modals/notes/notes";
+import NewNote from "../modals/notes/newNote";
 
 const ChatFrame = () => {
 
@@ -64,7 +66,8 @@ const ChatFrame = () => {
                                 open={iconRef}
                                 onClick={() => setIconRef()}
                             >
-                                <MenuItem onClick={() => setOpenModal(true)} >Editar Perfil</MenuItem>
+                                <MenuItem onClick={() => setOpenModal('form')} >Editar Perfil</MenuItem>
+                                <MenuItem onClick={() => setOpenModal('notes')} >Notas</MenuItem>
                                 <MenuItem onClick={finishMeeting} >Terminar</MenuItem>
                             </Menu>
                         </Box>
@@ -94,11 +97,18 @@ const ChatFrame = () => {
 
             <Dialog
                 open={openModal}
-                onClose={() => setOpenModal(false)}
+                onClose={() => setOpenModal()}
                 maxWidth={'xs'}
             >
                 <DialogContent style={{borderRadius: '20px'}}>
-                    <UserForm user={channel?.user} setOpen={setOpenModal} onUpdateUser={updateUser} />
+                    {
+                        openModal == 'form' ?
+                            <UserForm user={channel?.user} setOpen={setOpenModal} onUpdateUser={updateUser} />
+                        : openModal == 'notes' ?
+                            <Notes setOpen={setOpenModal} />
+                        :
+                            <NewNote setOpen={setOpenModal} />
+                    }
                 </DialogContent>
             </Dialog>
         </CustomChatPaper>

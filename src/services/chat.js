@@ -7,3 +7,11 @@ export const getChannelsByAdvisor = (id) => {
 export const endMeeting = (data) => {
     return axiosChatInstance.post(`messages/end`, data);
 }
+
+export const getNotesByUser = (user_id) => {
+    return axiosChatInstance.get(`notes/${user_id}`);
+}
+
+export const addNote = (body) => {
+    return axiosChatInstance.post(`notes`, body);
+}
