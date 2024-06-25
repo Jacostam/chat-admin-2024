@@ -1,10 +1,11 @@
 'use client'
 import styled from '@emotion/styled'
 import { Box, Drawer, Grid, IconButton, List, ListItem, Typography } from '@mui/material'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { IconBurger, IconChevronDown } from '../../../public/icons/custom'
 import { usePathname, useRouter } from 'next/navigation'
 import { DrawerRoutes } from './DrawerRoutes'
+import { useAuthStore } from '@/stores/auth'
 
 const CardContainer = styled(Box)(({theme}) => ({
     background: theme?.palette?.primary?.main,
@@ -40,6 +41,16 @@ const CustomDrawer = ({ drawerWidth }) => {
     const router = useRouter()
     const pathName = usePathname();
 
+    const { user } = useAuthStore()
+
+    const filterRoutes = useMemo(() => {
+        if (user?.profile_id) {
+            return DrawerRoutes.filter(item => item?.rols?.includes(user?.profile_id));
+        }
+
+        return []
+    }, [user])
+
     return (
         <Drawer 
             variant='permanent'
@@ -67,7 +78,7 @@ const CustomDrawer = ({ drawerWidth }) => {
 
                 <List>
                     {
-                        DrawerRoutes?.map((item, index) => (
+                        filterRoutes?.map((item, index) => (
                             <>
                                 <ListItem key={`${index}-title`}>
                                     <ItemRoute
@@ -85,7 +96,7 @@ const CustomDrawer = ({ drawerWidth }) => {
                                             </Grid>
 
                                             {
-                                                item?.routes &&
+                                                item?.routes && false && //show multi sub routes
                                                 <Grid item xs={1} >
                                                     <IconChevronDown />
                                                 </Grid>

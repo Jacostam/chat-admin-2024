@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { useChatStore } from "@/stores/chat";
 import Loading from "../loading/loading";
 import useSocket from "@/hooks/useSocket";
+import { useAuthStore } from "@/stores/auth";
 
 const ListChats = () => {
 

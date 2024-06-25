@@ -2,12 +2,14 @@ import LoadingButton from "@/components/buttons/loadingButton/LoadingButton";
 import ControllerAutocomplete from "@/components/inputs/controllerAutocomplete/ControllerAutocomplete";
 import ControllerInput from "@/components/inputs/controllerInput/ControllerInput";
 import { createAdvisor, updateAdvisor } from "@/services/advisors";
+import { useAuthStore } from "@/stores/auth";
 import { Button, FormControlLabel, Grid, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 const AdvisorsForm = ({setOpen, current, setReset, clients, currentClient}) => {
 
+    const { user: { profile_id } } = useAuthStore()
     const {control, handleSubmit} = useForm({
         defaultValues: current
     });
@@ -16,14 +18,13 @@ const AdvisorsForm = ({setOpen, current, setReset, clients, currentClient}) => {
 
     const onSubmit = (values) => {
 
-        const client_uuid = values?.client?.uuid
+        const client_uuid = profile_id == 3 ? values?.client?.uuid : currentClient?.uuid
 
         setLoading(true);
         const callBack = current ? updateAdvisor : createAdvisor;
 
         callBack(values, current?.id ?? client_uuid)
             .then(({data}) => {
-                console.log(data)
                 if (data?.status == 'success') {
                     setOpen()
                     setReset(prev => !prev)
@@ -78,7 +79,7 @@ const AdvisorsForm = ({setOpen, current, setReset, clients, currentClient}) => {
                 </Grid>
                 
                 {
-                    !current &&
+                    !current && profile_id == 3 &&
                     <Grid item xs={12}>
                         <ControllerAutocomplete
                             control={control}

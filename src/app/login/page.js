@@ -8,6 +8,7 @@ import ControllerInput from '@/components/inputs/controllerInput/ControllerInput
 import LoadingButton from '@/components/buttons/loadingButton/LoadingButton'
 import Image from 'next/image'
 import { loginStore, useAuthStore } from '@/stores/auth'
+import { useChatStore } from '@/stores/chat'
 // import { loginStore, useAuthStore } from '@/stores/auth'
 
 const CustomPaper = styled(Paper)({
@@ -19,6 +20,7 @@ const CustomPaper = styled(Paper)({
 const Login = () => {
 
     const { setUser, setOauthId } = useAuthStore();
+    const { setAdvisor } = useChatStore();
 
     const { control, handleSubmit, formState: { errors } } = useForm();
     const router = useRouter();
@@ -34,7 +36,15 @@ const Login = () => {
                 setUser(data)
                 setOauthId(data?.id)
 
-                router.push('/admin/clients')    
+                if (data?.profile_id == 1) {
+                    setAdvisor(data)
+                    router.push('/admin/chat')
+                } else if (data?.profile_id == 2) {
+                    router.push('/admin/advisors')
+                } else {
+                    router.push('/admin/clients')    
+                }
+
             })
             .catch((e) => {
                 setErrorMessage(e);
