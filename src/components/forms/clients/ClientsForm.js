@@ -12,6 +12,8 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
     });
 
     const [loading, setLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false)
+    const [error, setError] = useState()
 
     const onSubmit = (values) => {
 
@@ -26,7 +28,10 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
                     throw data;
                 }
             })
-            .catch(console.error)
+            .catch((e) => {
+                setError(handleError(e));
+                setShowAlert(true);
+            })
             .finally(() => {
                 setLoading(false)
             })
@@ -136,6 +141,20 @@ const ClientsForm = ({ setOpen, current, setReset }) => {
                     </LoadingButton>
                 </Grid>
             </Grid>
+
+            {
+                showAlert && error &&
+                <Snackbar
+                    anchorOrigin={{vertical:'bottom' , horizontal:'center'}} 
+                    open={showAlert}
+                    autoHideDuration={1500}
+                    onClose={() => setShowAlert(false)}
+                >
+                    <Alert severity={'error'} >
+                        {error}
+                    </Alert>
+                </Snackbar>
+            }
         </form>
     )
 

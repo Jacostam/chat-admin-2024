@@ -2,7 +2,7 @@ import { create } from "zustand"
 
 export const useChatStore = create((set, get) => ({
 
-    advisor: {},
+    advisor: JSON.parse(localStorage.getItem('advisor') ?? '{}'),
     channel: {},
     reload: false,
 

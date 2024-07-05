@@ -3,7 +3,8 @@ import ControllerAutocomplete from "@/components/inputs/controllerAutocomplete/C
 import ControllerInput from "@/components/inputs/controllerInput/ControllerInput";
 import { createAdvisor, updateAdvisor } from "@/services/advisors";
 import { useAuthStore } from "@/stores/auth";
-import { Button, FormControlLabel, Grid, Switch, Typography } from "@mui/material";
+import { handleError } from "@/utils/utils";
+import { Alert, Button, FormControlLabel, Grid, Snackbar, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -15,6 +16,8 @@ const AdvisorsForm = ({setOpen, current, setReset, clients, currentClient}) => {
     });
 
     const [loading, setLoading] = useState(false)
+    const [showAlert, setShowAlert] = useState(false)
+    const [error, setError] = useState()
 
     const onSubmit = (values) => {
 
@@ -32,7 +35,10 @@ const AdvisorsForm = ({setOpen, current, setReset, clients, currentClient}) => {
                     throw data;
                 }
             })
-            .catch(console.error)
+            .catch((e) => {
+                setError(handleError(e));
+                setShowAlert(true);
+            })
             .then(() => {
                 setLoading(false)
             })
@@ -163,6 +169,20 @@ const AdvisorsForm = ({setOpen, current, setReset, clients, currentClient}) => {
                 </Grid>
 
             </Grid>
+
+            {
+                showAlert && error &&
+                <Snackbar
+                    anchorOrigin={{vertical:'bottom' , horizontal:'center'}} 
+                    open={showAlert}
+                    autoHideDuration={1500}
+                    onClose={() => setShowAlert(false)}
+                >
+                    <Alert severity={'error'} >
+                        {error}
+                    </Alert>
+                </Snackbar>
+            }
         </form>
     )
 

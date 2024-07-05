@@ -13,7 +13,7 @@ export const useLayout = (onSuccess = () => {}) => {
     const router = useRouter();
 
     useEffect(() => {
-        if (user?.id) {
+        if (!user?.id) {
             setLoading(true);
             getProfileStore(localStorage.getItem('auth_id'))
                 .then(({data}) => {

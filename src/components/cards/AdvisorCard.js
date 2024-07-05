@@ -17,6 +17,7 @@ const AdvisorCard = ({item, handleCurrent}) => {
     const { setAdvisor } = useChatStore()
 
     const goToChats = () => {
+        localStorage.setItem('advisor', JSON.stringify(item));
         setAdvisor(item)
         router.push('/admin/chat')
     }
