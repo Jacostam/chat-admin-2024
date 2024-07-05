@@ -14,6 +14,10 @@ const ClientsCard = ({ handleCurrent, item }) => {
 
     const router = useRouter();
 
+    const handleCopy = (uuid) => {
+        navigator?.clipboard?.writeText(uuid)
+    }
+
     return (
         <CutomPaper>
             <Grid container alignItems={'center'}>
@@ -34,7 +38,9 @@ const ClientsCard = ({ handleCurrent, item }) => {
                 <Grid item xs={2}>
                     <Box display={'flex'} alignItems={'center'} gap={3} >
                         <Typography>{item?.uuid?.split('-')?.at(0)}</Typography>
-                        <IconButton>
+                        <IconButton
+                            onClick={() => handleCopy(item?.uuid)}
+                        >
                             <IconCopy size={14}/>
                         </IconButton>
                     </Box>
